@@ -18,3 +18,7 @@ buildcppc
 .#*
 \#*#
 *.swp
+
+__pycache__/
+*.o
+*.mod

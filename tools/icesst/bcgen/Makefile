@@ -2,17 +2,17 @@
 null  :=
 
 # Check for netcdf locations
-ifeq ($(LIB_NETCDF),$(null))
-LIB_NETCDF := /usr/local/lib
+ifeq ($(NCAR_LDFLAGS_NETCDF),$(null))
+NCAR_LDFLAGS_NETCDF := /usr/local/lib
 endif
 
-ifeq ($(INC_NETCDF),$(null))
-INC_NETCDF := /usr/local/include
+ifeq ($(NCAR_INC_NETCDF),$(null))
+NCAR_INC_NETCDF := /usr/local/include
 endif
 
 # FFLAGS and LDFLAGS will have at least these values in all situations
-FFLAGS  = -c -I$(INC_NETCDF)
-LDFLAGS = -L$(LIB_NETCDF) -lnetcdf
+FFLAGS  = -c -I$(NCAR_INC_NETCDF)
+LDFLAGS = -L$(NCAR_LDFLAGS_NETCDF) -lnetcdf -lnetcdff
 
 # Determine platform 
 UNAMES := $(shell uname -s)

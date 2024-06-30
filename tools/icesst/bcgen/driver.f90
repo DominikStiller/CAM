@@ -149,13 +149,13 @@ program pcmdisst
 ! Ensure that climatology period is as expected (1982-2001).  To enable other
 ! averaging periods, just comment out the following bit of code
 !
-   if (mon1clm /= 1  .or. iyr1clm /= 1982 .or. &
-       monnclm /= 12 .or. iyrnclm /= 2001) then
-      write(6,*)'Climatological averaging period is not as expected (1982-2001)'
-      write(6,*)'If you REALLY want to change the averaging period, delete the'
-      write(6,*)'appropriate err_exit call from driver.f90'
-      call err_exit ('pcmdisst')
-   end if
+   ! if (mon1clm /= 1  .or. iyr1clm /= 1982 .or. &
+   !     monnclm /= 12 .or. iyrnclm /= 2001) then
+   !    write(6,*)'Climatological averaging period is not as expected (1982-2001)'
+   !    write(6,*)'If you REALLY want to change the averaging period, delete the'
+   !    write(6,*)'appropriate err_exit call from driver.f90'
+   !    call err_exit ('pcmdisst')
+   ! end if
 !
 ! Calculate derived variables
 !

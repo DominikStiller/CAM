@@ -468,27 +468,27 @@ subroutine bcgen (mon1, iyr1, monn, iyrn, mon1rd,                &
 ! *****************************************************************
 
    monlen(2,2) = 28       ! JR for no leap year
-
-!
-! Copy dimension vars from input to output
-!
+   
+   !
+   ! Copy dimension vars from input to output
+   !
    call wrap_nf_inq_varid (ncidin, 'lon', lonid)
    call wrap_nf_inq_varid (ncidin, 'lat', latid)
    call wrap_nf_get_var_double (ncidin, lonid, xlon)
    call wrap_nf_get_var_double (ncidin, latid, xlat)
-!
-! Open output files and define metadata
-!
+   !
+   ! Open output files and define metadata
+   !
    call setup_outfile (ncidclim, outfilclim, 'CLIM', dateidclim, datesecidclim, &
-                       timeidclim, icesst, nlon, nlat, xlon,                    &
-                       xlat, 0, 1, history)
+   timeidclim, icesst, nlon, nlat, xlon,                    &
+   xlat, 0, 1, history)
    call setup_outfile (ncidamip, outfilamip, 'AMIP', dateidamip, datesecidamip, &
-                       timeidamip, icesst, nlon, nlat, xlon,                    &
-                       xlat, iyr1out, mon1out, history)
-!
-! Determine starting index of data to be read.  Assume this and subsequent data are monthly
-! values, centered in the middle of the month.
-!
+   timeidamip, icesst, nlon, nlat, xlon,                    &
+   xlat, iyr1out, mon1out, history)
+   !
+   ! Determine starting index of data to be read.  Assume this and subsequent data are monthly
+   ! values, centered in the middle of the month.
+   !
    start1d(1) = 1
    call wrap_nf_inq_varid (ncidin, 'date', dateidin)
    do while (.true.)
@@ -499,7 +499,7 @@ subroutine bcgen (mon1, iyr1, monn, iyrn, mon1rd,                &
       end if
       start1d(1) = start1d(1) + 1
    end do
-!
+   !
 ! Ensure that enough data are present, and that they increment properly in time
 !
    start1dtst(1) = start1d(1)
