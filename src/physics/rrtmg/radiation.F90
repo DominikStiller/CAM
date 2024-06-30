@@ -71,6 +71,7 @@ type rad_out_t
    real(r8) :: fsntoa(pcols)        ! Net solar flux at TOA
    real(r8) :: fsntoac(pcols)       ! Clear sky net solar flux at TOA
    real(r8) :: fsutoa(pcols)        ! upwelling solar flux at TOA
+   real(r8) :: fsutoac(pcols)       ! Clear-sky upwelling solar flux at TOA
 
    real(r8) :: fsnirt(pcols)        ! Near-IR flux absorbed at toa
    real(r8) :: fsnrtc(pcols)        ! Clear sky near-IR flux absorbed at toa
@@ -87,7 +88,9 @@ type rad_out_t
 
    real(r8) :: flntc(pcols)         ! Clear sky lw flux at model top
    real(r8) :: flut(pcols)          ! Upward flux at top of model
+   real(r8) :: flutoa(pcols)        ! Upward flux at top of atmosphere
    real(r8) :: flutc(pcols)         ! Upward Clear Sky flux at top of model
+   real(r8) :: flutoac(pcols)       ! Upward clear-sky flux at top of atmosphere
    real(r8) :: lwcf(pcols)          ! longwave cloud forcing
 
    real(r8) :: fln200(pcols)        ! net longwave flux interpolated to 200 mb
@@ -458,6 +461,8 @@ subroutine radiation_init(pbuf2d)
                                                                                  sampling_seq='rad_lwsw')
          call addfld('FSUTOA'//diag(icall),   horiz_only,   'A', 'W/m2', 'Upwelling solar flux at top of atmosphere',       &
                                                                                  sampling_seq='rad_lwsw')
+         call addfld('FSUTOAC'//diag(icall),   horiz_only,   'A', 'W/m2', 'Clearsky upwelling solar flux at top of atmosphere',       &
+                                                                                 sampling_seq='rad_lwsw')
          call addfld('FSNIRTOA'//diag(icall), horiz_only,   'A', 'W/m2',                                                    &
                                'Net near-infrared flux (Nimbus-7 WFOV) at top of atmosphere', sampling_seq='rad_lwsw')
          call addfld('FSNRTOAC'//diag(icall), horiz_only,   'A', 'W/m2',                                                    &
@@ -507,6 +512,7 @@ subroutine radiation_init(pbuf2d)
             call add_default('FSNS'//diag(icall),    1, ' ')
             call add_default('FSNSC'//diag(icall),   1, ' ')
             call add_default('FSUTOA'//diag(icall),  1, ' ')
+            call add_default('FSUTOAC'//diag(icall),  1, ' ')
             call add_default('FSDSC'//diag(icall),   1, ' ')
             call add_default('FSDS'//diag(icall),    1, ' ')
          endif
@@ -540,6 +546,10 @@ subroutine radiation_init(pbuf2d)
                                                                            sampling_seq='rad_lwsw')
          call addfld('FLUT'//diag(icall),    horiz_only,  'A', 'W/m2', 'Upwelling longwave flux at top of model',          &
                                                                            sampling_seq='rad_lwsw')
+         call addfld('FLUTOA'//diag(icall),  horiz_only,  'A', 'W/m2', 'Upwelling longwave flux at top of atmosphere',     &
+                                                                           sampling_seq='rad_lwsw')
+         call addfld('FLUTOAC'//diag(icall), horiz_only,  'A', 'W/m2', 'Clearsky upwelling longwave flux at top of atmosphere',     &
+                                                                           sampling_seq='rad_lwsw')
          call addfld('FLUTC'//diag(icall),   horiz_only,  'A', 'W/m2', 'Clearsky upwelling longwave flux at top of model', &
                                                                            sampling_seq='rad_lwsw')
          call addfld('LWCF'//diag(icall),    horiz_only,  'A', 'W/m2', 'Longwave cloud forcing', sampling_seq='rad_lwsw')
@@ -571,6 +581,8 @@ subroutine radiation_init(pbuf2d)
             call add_default('FLNTCLR'//diag(icall), 1, ' ')
             call add_default('FREQCLR'//diag(icall), 1, ' ')
             call add_default('FLUT'//diag(icall),  1, ' ')
+            call add_default('FLUTOA'//diag(icall),  1, ' ')
+            call add_default('FLUTOAC'//diag(icall),  1, ' ')
             call add_default('FLUTC'//diag(icall), 1, ' ')
             call add_default('LWCF'//diag(icall),  1, ' ')
             call add_default('FLNS'//diag(icall),  1, ' ')
@@ -1107,7 +1119,7 @@ subroutine radiation_tend( &
                   cldfprime, aer_tau, aer_tau_w, aer_tau_w_g,  aer_tau_w_f,  &
                   eccf, coszrs, rd%solin, sfac, cam_in%asdir,                &
                   cam_in%asdif, cam_in%aldir, cam_in%aldif, qrs, rd%qrsc,    &
-                  fsnt, rd%fsntc, rd%fsntoa, rd%fsutoa, rd%fsntoac,          &
+                  fsnt, rd%fsntc, rd%fsntoa, rd%fsutoa, rd%fsutoac, rd%fsntoac,          &
                   rd%fsnirt, rd%fsnrtc, rd%fsnirtsq, fsns, rd%fsnsc,         &
                   rd%fsdsc, fsds, cam_out%sols, cam_out%soll, cam_out%solsd, &
                   cam_out%solld, fns, fcns, Nday, Nnite,                     &
@@ -1154,7 +1166,7 @@ subroutine radiation_tend( &
                   lchnk, ncol, num_rrtmg_levs, r_state, state%pmid,  &
                   aer_lw_abs, cldfprime, c_cld_lw_abs, qrl, rd%qrlc, &
                   flns, flnt, rd%flnsc, rd%flntc, cam_out%flwds,     &
-                  rd%flut, rd%flutc, fnl, fcnl, rd%fldsc,            &
+                  rd%flut, rd%flutoa, rd%flutc, rd%flutoac, fnl, fcnl, rd%fldsc,            &
                   lu, ld)
 
                !  Output fluxes at 200 mb
@@ -1307,6 +1319,7 @@ subroutine radiation_output_sw(lchnk, ncol, icall, rd, pbuf, cam_out)
    call outfld('SWCF'//diag(icall),     ftem,          pcols, lchnk)
 
    call outfld('FSUTOA'//diag(icall),   rd%fsutoa,     pcols, lchnk)
+   call outfld('FSUTOAC'//diag(icall),  rd%fsutoac,    pcols, lchnk)
 
    call outfld('FSNIRTOA'//diag(icall), rd%fsnirt,     pcols, lchnk)
    call outfld('FSNRTOAC'//diag(icall), rd%fsnrtc,     pcols, lchnk)
@@ -1389,7 +1402,9 @@ subroutine radiation_output_lw(lchnk, ncol, icall, rd, pbuf, cam_out, freqclr, f
    call outfld('FLNTCLR'//diag(icall), flntclr,       pcols, lchnk)
 
    call outfld('FLUT'//diag(icall),    rd%flut,       pcols, lchnk)
+   call outfld('FLUTOA'//diag(icall),  rd%flutoa,     pcols, lchnk)
    call outfld('FLUTC'//diag(icall),   rd%flutc,      pcols, lchnk)
+   call outfld('FLUTOAC'//diag(icall), rd%flutoac,    pcols, lchnk)
    
    ftem(:ncol) = rd%flutc(:ncol) - rd%flut(:ncol)
    call outfld('LWCF'//diag(icall),    ftem,          pcols, lchnk)

@@ -46,7 +46,7 @@ subroutine rad_rrtmg_sw(lchnk,ncol       ,rrtmg_levs   ,r_state      , &
                     E_aer_tau,E_aer_tau_w,E_aer_tau_w_g,E_aer_tau_w_f, &
                     eccf     ,E_coszrs   ,solin        ,sfac         , &
                     E_asdir  ,E_asdif    ,E_aldir      ,E_aldif      , &
-                    qrs      ,qrsc       ,fsnt         ,fsntc        ,fsntoa,fsutoa, &
+                    qrs      ,qrsc       ,fsnt         ,fsntc        ,fsntoa,fsutoa,fsutoac, &
                     fsntoac  ,fsnirtoa   ,fsnrtoac     ,fsnrtoaq     ,fsns    , &
                     fsnsc    ,fsdsc      ,fsds         ,sols         ,soll    , &
                     solsd    ,solld      ,fns          ,fcns         , &
@@ -143,6 +143,7 @@ subroutine rad_rrtmg_sw(lchnk,ncol       ,rrtmg_levs   ,r_state      , &
    real(r8), intent(out) :: fsnt(pcols)      ! Total column absorbed solar flux
    real(r8), intent(out) :: fsntoa(pcols)    ! Net solar flux at TOA
    real(r8), intent(out) :: fsutoa(pcols)    ! Upward solar flux at TOA
+   real(r8), intent(out) :: fsutoac(pcols)   ! Clearsky upward solar flux at TOA
    real(r8), intent(out) :: fsds(pcols)      ! Flux shortwave downwelling surface
 
    real(r8), intent(out) :: fsnsc(pcols)     ! Clear sky surface absorbed solar flux
@@ -291,6 +292,7 @@ subroutine rad_rrtmg_sw(lchnk,ncol       ,rrtmg_levs   ,r_state      , &
    fsntc(1:ncol)    = 0.0_r8
    fsntoa(1:ncol)   = 0.0_r8
    fsutoa(1:ncol)   = 0.0_r8
+   fsutoac(1:ncol)  = 0.0_r8
    fsntoac(1:ncol)  = 0.0_r8
 
    solin(1:ncol)    = 0.0_r8
@@ -534,6 +536,7 @@ subroutine rad_rrtmg_sw(lchnk,ncol       ,rrtmg_levs   ,r_state      , &
    ! Set the net absorted shortwave flux at TOA (top of extra layer)
    fsntoa(1:Nday) = swdflx(1:Nday,rrtmg_levs+1) - swuflx(1:Nday,rrtmg_levs+1)
    fsutoa(1:Nday) = swuflx(1:Nday,rrtmg_levs+1)
+   fsutoac(1:Nday) = swuflxc(1:Nday,rrtmg_levs+1)
    fsntoac(1:Nday) = swdflxc(1:Nday,rrtmg_levs+1) - swuflxc(1:Nday,rrtmg_levs+1)
 
    ! Set net near-IR flux at top of the model

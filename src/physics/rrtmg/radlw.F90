@@ -44,7 +44,7 @@ subroutine rad_rrtmg_lw(lchnk   ,ncol      ,rrtmg_levs,r_state,       &
                         pmid    ,aer_lw_abs,cld       ,tauc_lw,       &
                         qrl     ,qrlc      ,                          &
                         flns    ,flnt      ,flnsc     ,flntc  ,flwds, &
-                        flut    ,flutc     ,fnl       ,fcnl   ,fldsc, &
+                        flut    ,flutoa    ,flutc,    flutoac ,fnl    ,fcnl   ,fldsc, &
                         lu      ,ld        )
 
 !-----------------------------------------------------------------------
@@ -81,6 +81,8 @@ subroutine rad_rrtmg_lw(lchnk   ,ncol      ,rrtmg_levs,r_state,       &
    real(r8), intent(out) :: flns(pcols)          ! Surface cooling flux
    real(r8), intent(out) :: flnt(pcols)          ! Net outgoing flux
    real(r8), intent(out) :: flut(pcols)          ! Upward flux at top of model
+   real(r8), intent(out) :: flutoa(pcols)        ! Upward flux at top of atmosphere
+   real(r8), intent(out) :: flutoac(pcols)       ! Upward clear-sky flux at top of atmosphere
    real(r8), intent(out) :: flnsc(pcols)         ! Clear sky surface cooing
    real(r8), intent(out) :: flntc(pcols)         ! Net clear sky outgoing flux
    real(r8), intent(out) :: flutc(pcols)         ! Upward clear-sky flux at top of model
@@ -213,6 +215,8 @@ subroutine rad_rrtmg_lw(lchnk   ,ncol      ,rrtmg_levs,r_state,       &
    flnt(:ncol)  = uflx (:ncol,rrtmg_levs) - dflx (:ncol,rrtmg_levs)
    flntc(:ncol) = uflxc(:ncol,rrtmg_levs) - dflxc(:ncol,rrtmg_levs)
    flut(:ncol)  = uflx (:ncol,rrtmg_levs)
+   flutoa(:ncol)= uflx (:ncol,rrtmg_levs+1)
+   flutoac(:ncol)= uflxc (:ncol,rrtmg_levs+1)
    flutc(:ncol) = uflxc(:ncol,rrtmg_levs)
 
    !
