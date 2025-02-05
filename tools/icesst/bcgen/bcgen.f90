@@ -346,8 +346,8 @@ subroutine bcgen (mon1, iyr1, monn, iyrn, mon1rd,                &
 
    logical, intent(in) :: oldttcalc   ! for bfb agreement with original code
 
-   character*120, intent(in) :: outfilclim  ! output filename for climatology
-   character*120, intent(in) :: outfilamip  ! output filename for year-by-year output
+   character*512, intent(in) :: outfilclim  ! output filename for climatology
+   character*512, intent(in) :: outfilamip  ! output filename for year-by-year output
    character(len=*), intent(in) :: history  ! history attribute
 !
 ! Local workspace

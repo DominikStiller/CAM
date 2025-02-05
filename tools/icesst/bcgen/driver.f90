@@ -35,12 +35,12 @@ program pcmdisst
 
    logical :: oldttcalc = .false. ! true => bfb agreement with original code
 
-   character(len=120) :: infil      = ' ' ! input filename.
-   character(len=120) :: outfilclim = ' ' ! output climatology file
-   character(len=120) :: outfilamip = ' ' ! output AMIP-style file
-   character(len=256) :: string           ! temporary character variable
+   character(len=1024) :: infil      = ' ' ! input filename.
+   character(len=1024) :: outfilclim = ' ' ! output climatology file
+   character(len=1024) :: outfilamip = ' ' ! output AMIP-style file
+   character(len=1024) :: string           ! temporary character variable
 
-   character(len=256) :: arg                 ! cmd line argument
+   character(len=512) :: arg                 ! cmd line argument
    character(len=512) :: cmdline             ! input command line
    character(len=19)  :: cur_timestamp
    character(len=1024) :: prev_history = ' ' ! history attribute from input file

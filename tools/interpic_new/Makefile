@@ -11,11 +11,11 @@ RM = rm
 
 # Check whether NetCDF library and include directories specified in environment
 # or on make commandline.
-ifeq ($(strip $(LIB_NETCDF)),)
-  LIB_NETCDF := /usr/local/lib
+ifeq ($(strip $(NCAR_LDFLAGS_NETCDF)),)
+  NCAR_LDFLAGS_NETCDF := /usr/local/lib
 endif
-ifeq ($(strip $(INC_NETCDF)),)
-  INC_NETCDF := /usr/local/include
+ifeq ($(strip $(NCAR_INC_NETCDF)),)
+  NCAR_INC_NETCDF := /usr/local/include
 endif
 
 # Determine platform 
@@ -94,9 +94,9 @@ ifeq ($(UNAMES),Linux)
 
 # ifort
 FC = ifort
-FFLAGS =  -c -I$(INC_NETCDF) -g -check all -fpe0 -traceback -ftz -convert big_endian -fp-model precise
+FFLAGS =  -c -I$(NCAR_INC_NETCDF) -g -check all -fpe0 -traceback -ftz -convert big_endian -fp-model precise
 
-LDFLAGS = -L$(LIB_NETCDF) -lnetcdf
+LDFLAGS = -L$(NCAR_LDFLAGS_NETCDF) -lnetcdff -lnetcdf
 endif
 
 #------------------------------------------------------------------------

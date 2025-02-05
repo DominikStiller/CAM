@@ -22,6 +22,7 @@ UNAMES := $(shell uname -s)
 #------------------------------------------------------------------------
 
 ifeq ($(UNAMES),Linux)
+  # USER_FC = pgf90
   ifeq ($(USER_FC),pgf90)
     FC = pgf90
     ifeq ($(DEBUG),TRUE)
