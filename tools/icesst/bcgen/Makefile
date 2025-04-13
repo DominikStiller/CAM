@@ -12,7 +12,7 @@ endif
 
 # FFLAGS and LDFLAGS will have at least these values in all situations
 FFLAGS  = -c -I$(NCAR_INC_NETCDF)
-LDFLAGS = -L$(NCAR_LDFLAGS_NETCDF) -lnetcdf -lnetcdff
+LDFLAGS = -L$(NCAR_LDFLAGS_NETCDF) -lnetcdff
 
 # Determine platform 
 UNAMES := $(shell uname -s)

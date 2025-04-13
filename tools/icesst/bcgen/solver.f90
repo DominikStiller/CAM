@@ -5,7 +5,7 @@ module solver
    implicit none
 
    ! maximum number of months in input dataset
-   integer, parameter :: nmax=12*250
+   integer, parameter :: nmax=12*1200
 
 CONTAINS
    
