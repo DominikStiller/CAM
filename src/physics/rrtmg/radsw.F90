@@ -603,6 +603,7 @@ subroutine rad_rrtmg_sw(lchnk,ncol       ,rrtmg_levs   ,r_state      , &
    call ExpDayNite(fsnt,	Nday, IdxDay, Nnite, IdxNite, 1, pcols)
    call ExpDayNite(fsntoa,	Nday, IdxDay, Nnite, IdxNite, 1, pcols)
    call ExpDayNite(fsutoa,	Nday, IdxDay, Nnite, IdxNite, 1, pcols)
+   call ExpDayNite(fsutoac,	Nday, IdxDay, Nnite, IdxNite, 1, pcols)
    call ExpDayNite(fsds,	Nday, IdxDay, Nnite, IdxNite, 1, pcols)
    call ExpDayNite(fsnsc,	Nday, IdxDay, Nnite, IdxNite, 1, pcols)
    call ExpDayNite(fsdsc,	Nday, IdxDay, Nnite, IdxNite, 1, pcols)
